@@ -23,13 +23,17 @@ const Search = () => {
       setResults(data.query.search);
     };
 
-    const timeoutid = setTimeout(() => {
-      if (term) search();
-    }, 5000);
+    if (term && !results.length) {
+      search();
+    } else {
+      const timeoutid = setTimeout(() => {
+        if (term) search();
+      }, 2000);
 
-    return () => {
-      clearTimeout(timeoutid);
-    };
+      return () => {
+        clearTimeout(timeoutid);
+      };
+    }
   }, [term]);
 
   const renderedResults = results.map((result) => {
