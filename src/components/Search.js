@@ -1,13 +1,17 @@
 import React from 'react';
 import { useState, useEffect } from 'react/cjs/react.development';
 import axios from 'axios';
+import { waitFor } from '@testing-library/dom';
 
 const Search = () => {
-  const [term, setTerm] = useState('');
+  const [term, setTerm] = useState('javascript');
+  const [results, setResults] = useState([]);
+
+  console.log(results);
 
   useEffect(() => {
     const search = async () => {
-      await axios.get('https://en.wikipedia.org/w/api.php?', {
+      const { data } = await axios.get('https://en.wikipedia.org/w/api.php?', {
         params: {
           action: 'query',
           list: 'search',
@@ -16,9 +20,30 @@ const Search = () => {
           srsearch: term,
         },
       });
+      setResults(data.query.search);
     };
-    search();
+    if (term) search();
   }, [term]);
+
+  const renderedResults = results.map((result) => {
+    return (
+      <div className="item" key={result.pageid}>
+        <div className="right floated content">
+          <a
+            className="ui button"
+            href={`https://en.wikipedia.org?curid=${result.pageid}`}
+          >
+            Go
+          </a>
+        </div>
+        <div className="content">
+          <div className="header">{result.title}</div>
+          <span dangerouslySetInnerHTML={{ __html: result.snippet }}></span>
+        </div>
+      </div>
+    );
+  });
+
   return (
     <div>
       <div className="ui form">
@@ -31,6 +56,7 @@ const Search = () => {
           />
         </div>
       </div>
+      <div className="ui celled list">{renderedResults}</div>
     </div>
   );
 };
