@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Dropdown from './Dropdown';
 import { use } from 'react/cjs/react.development';
+import Convert from './Convert';
 
 const options = [
   { label: 'Afrikaans', value: 'af' },
@@ -11,12 +12,11 @@ const options = [
 const Translate = () => {
   const [language, setLanguage] = useState(options[0]);
   const [text, setText] = useState('');
-  console.log(text);
   return (
     <div>
       <div className="ui form">
         <div className="field ">
-          <label>Enter Text </label> 
+          <label>Enter Text </label>
           <input value={text} onChange={(e) => setText(e.target.value)} />
         </div>
       </div>
@@ -26,6 +26,9 @@ const Translate = () => {
         onSelectedChange={setLanguage}
         label="Select a Language"
       />
+      <hr />
+      <h3 className="ui header"> Outputs </h3>
+      <Convert language={language} text={text} />
     </div>
   );
 };
