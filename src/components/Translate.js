@@ -4,6 +4,7 @@ import { use } from 'react/cjs/react.development';
 import Convert from './Convert';
 
 const options = [
+  { label: 'French', value: 'fr' },
   { label: 'Afrikaans', value: 'af' },
   { label: 'Arabic', value: 'ar' },
   { label: 'Hindi', value: 'hi' },
